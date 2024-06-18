@@ -80,13 +80,27 @@ function isSubset(arr1, arr2) {
 }
 
 
-function extractDocumentId(text) {
-  // Regular expression to match BPR, MNWI, or TWI followed by 4 digits, case insensitive
-  const regex = /\b(?:BPR|MNWI|TWI)\d{4}\b/gi;
-  const matches = text.match(regex);
-  return matches ? matches[0] : null;
-}
+// function extractDocumentId(text) {
+//   // Regular expression to match BPR, MNWI, or TWI followed by 4 digits, case insensitive
+//   const regex = /\b(?:BPR|MNWI|TWI)\d{4}\b/gi;
+//   const matches = text.match(regex);
+//   return matches ? matches[0] : null;
+// }
 
+function extractDocumentId(text) {
+  console.log(text)
+  //if text has with or w/ ,split at that point and use left side.
+  let matches = [];
+  // Regular expression pattern to match 'cs' or 'rm' followed by 4 digits, case-insensitive
+  const pattern = /(BPR|MNWI|TWI)\d{4}/gi;
+  matches = text.match(pattern);
+  matches = matches ? matches.map(match => match.toLowerCase()) : [];
+  //throw an error if empty
+  console.log(matches)
+  if (matches.length == 0) return "file name issue";
+  
+  return matches[0];
+}
 
 app.listen(port, () => {
   console.log("server started :" + port);
