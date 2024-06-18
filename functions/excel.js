@@ -61,14 +61,15 @@ module.exports = {
         };
 
         for (let i = 0; i < documentIds.length; i++) {
-            if (documentIds[i].startsWith("BPR")) {
+            if (documentIds[i].startsWith("bpr")) {
                 counts["BPR"]++;
-            } else if (documentIds[i].startsWith("MNWI")) {
+            } else if (documentIds[i].startsWith("mnwi")) {
                 counts["MNWI"]++;
-            } else if (documentIds[i].startsWith("TWI")) {
+            } else if (documentIds[i].startsWith("twi")) {
                 counts["TWI"]++;
             }
         }
+
 
         // Merge cells A1 to C1 (3 columns, 1 row) with custom style
         ws.cell(2, 2, 2, 12, true) // (startRow, startCol, endRow, endCol, merge)
