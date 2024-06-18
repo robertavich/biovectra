@@ -87,8 +87,8 @@ function isSubset(arr1, arr2) {
 //   return matches ? matches[0] : null;
 // }
 
+
 function extractDocumentId(text) {
-  console.log(text)
   //if text has with or w/ ,split at that point and use left side.
   let matches = [];
   // Regular expression pattern to match 'cs' or 'rm' followed by 4 digits, case-insensitive
@@ -96,10 +96,8 @@ function extractDocumentId(text) {
   matches = text.match(pattern);
   matches = matches ? matches.map(match => match.toLowerCase()) : [];
   //throw an error if empty
-  console.log(matches)
   if (matches.length == 0) return "file name issue";
-  
-  return matches[0];
+  return matches[0].toLowerCase();
 }
 
 app.listen(port, () => {
