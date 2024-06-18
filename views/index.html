@@ -391,17 +391,12 @@
                 },
                 success: function (data) {
                     blob = data;
-                    // blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                    // Simulate a 5-second delay
-                    setTimeout(function () {
-                        presentToast("calculation completed", 1);
-                        tempFiles = [];
-                        $("#input-excel").val("");
-                        document.getElementById("uploading").classList.add('hide');
-                        document.getElementById("download").classList.remove('hide');
-                        document.getElementsByClassName("folder-remove")[0].classList.remove("disable-pointer-events");
-                    }, 1000);
-
+                    presentToast("calculation completed", 1);
+                    tempFiles = [];
+                    $("#input-excel").val("");
+                    document.getElementById("uploading").classList.add('hide');
+                    document.getElementById("download").classList.remove('hide');
+                    document.getElementsByClassName("folder-remove")[0].classList.remove("disable-pointer-events");
                 },
             });
         }
