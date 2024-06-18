@@ -96,7 +96,7 @@ function extractDocumentId(text) {
   matches = text.match(pattern);
   matches = matches ? matches.map(match => match.toLowerCase()) : [];
   //throw an error if empty
-  if (matches.length == 0) return "file name issue";
+  if (matches.length == 0) return "missing document ids";
   return matches[0].toLowerCase();
 }
 
