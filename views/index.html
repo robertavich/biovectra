@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .centerify {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .title {
+            margin-top: 200px;
+            font-size: 20px;
+        }
+
+        .content {
+            width: 550px;
+            margin-top: 50px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+        }
+
+        .file-icon {
+            width: 200px;
+            height: 50px;
+            /* background-color: aliceblue; */
+            display: flex;
+            /* justify-content: center; */
+            /* align-items: center; */
+            align-items: end;
+        }
+
+        lottie-player {
+            width: 200px;
+            height: 50px;
+            /* background-color: chartreuse; */
+        }
+
+
+        .file-area {
+            border: 1.5px dashed rgba(0, 0, 0, 0.25);
+            width: 100%;
+            height: 150px;
+            position: relative;
+            border-radius: 5px;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            z-index: 9;
+        }
+
+        .file-area:hover {
+            border: 1.5px dashed teal;
+        }
+
+        .file-area input {
+            width: 100%;
+            height: 100%;
+            outline: none;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-area-text {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: -1;
+        }
+
+        .file-area-text p {
+            margin-top: 8px;
+        }
+
+        .selected-folder-content {
+            height: 40px;
+            margin-top: 10px;
+            /* background-color: rgba(0, 0, 0, 0.12); */
+        }
+
+        .selected-folder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .folder-icon,
+        .folder-remove {
+            width: 40px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: antiquewhite; */
+        }
+
+        .folder-remove:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .folder-info {
+            flex: 1;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            /* background-color: chartreuse; */
+        }
+
+        .folder-name {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            /* background-color: rgb(255, 174, 0); */
+        }
+
+        .docx-files-counter {
+            flex: 1;
+            font-size: 10px;
+            color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            /* background-color: aqua; */
+        }
+
+        .action {
+            height: 32px;
+            margin-top: 10px;
+            cursor: pointer;
+            /* background-color: aqua; */
+        }
+
+        .calculate {
+            width: 80px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(59, 99, 221);
+            color: white;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+        }
+
+        .download {
+            width: 140px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(59, 99, 221);
+            color: white;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+        }
+
+        .download-icon {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 5px;
+            /* background-color: chartreuse; */
+        }
+
+        #uploading {
+            width: 120px;
+            height: 100%;
+            /* display: none; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            /* background-color: rgb(40, 113, 169); */
+        }
+
+
+
+        .loading:after {
+            content: "...";
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+            animation: ellipsis-dot 1s infinite 0.3s;
+            animation-fill-mode: forwards;
+            width: 30px;
+        }
+
+        @keyframes ellipsis-dot {
+            25% {
+                content: "";
+            }
+
+            50% {
+                content: ".";
+            }
+
+            75% {
+                content: "..";
+            }
+
+            100% {
+                content: "...";
+            }
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        .disable-pointer-events {
+            pointer-events: none;
+        }
+
+        .toast {
+            --width: 200px;
+            --height: 32px;
+            color: white;
+            text-align: center;
+        }
+
+        .disable {
+            pointer-events: none;
+            background-color: rgba(0, 0, 0, 0.25);
+            color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="centerify">
+        <div class="title">Consumable Material Total Calculator</div>
+        <div class="content">
+            <form class="file-area" id="form">
+                <input type="file" id="input-excel" accept=".docx" webkitdirectory directory multiple>
+                <div class="file-area-text">
+                    <div class="file-icon">
+                        <lottie-player src="public/file.json" background="transparent" speed="1.5" loop autoplay>
+                        </lottie-player>
+                    </div>
+                    <p> Drag & drop or click to upload documents to
+                        Calculate Consumable Material Totals</p>
+                    <p> Files Supported: Docx</p>
+                </div>
+            </form>
+
+            <div class="selected-folder-content hide">
+                <!-- <div class="selected-folder">
+                    <div class="folder-icon">
+                        <i class="material-icons" style="color:rgb(204, 204, 204);font-size:36px">folder</i>
+                    </div>
+                    <div class="folder-info">
+                        <div class="folder-name">Hello from the future</div>
+                        <div class="docx-files-counter">60 docx files found!</div>
+                    </div>
+                    <div class="folder-remove" onclick="removeFolder(this)">
+                        <i class="material-icons" style="color:rgba(0, 0, 0, 0.5);font-size:14px">close</i>
+                    </div>
+                </div> -->
+            </div>
+            <div class="action hide">
+                <div class="calculate" id="calculate" onclick="calculate()">Calculate</div>
+                <div class="download hide" id="download" onclick="download()">
+                    <div class="download-icon">
+                        <i class="material-icons" style="color:white;font-size:14px">download</i>
+                    </div>
+                    Download Result
+                </div>
+                <div class="hide" id="uploading">
+                    <p class="loading">Calculating</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
+        integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-js-style/0.0.2/xlsx.full.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"
+        integrity="sha256-rxazK/eQADwKa8kSxwcGOW7Elc9k36FExgfntwW9EsA=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+
+        var tempFiles = [];
+        $(document).ready(function () {
+            //if folder is empty , it doesnt trigger
+            $("#input-excel").change(function (event) {
+                $(".selected-folder-content").empty();
+                resetAction();
+                tempFiles = [];
+                document.getElementsByClassName("selected-folder-content")[0].classList.remove('hide');
+                document.getElementsByClassName("action")[0].classList.remove('hide');
+                const files = event.target.files;
+                const folderName = files[0]?.webkitRelativePath?.split('/')[0];
+                console.log("Selected folder: " + folderName);
+
+
+                for (i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    // Check if the file extension is .docx and if it's not a temporary file
+                    if (!file.name.startsWith('~') && file.name.endsWith('.docx')) {
+                        tempFiles.push(file);
+                    }
+                }
+
+
+                var selected = `
+                    <div class="selected-folder" id="selected-folder">
+                        <div class="folder-icon">
+                            <i class="material-icons" style="color:rgb(204, 204, 204);font-size:36px">folder</i>
+                        </div>
+                        <div class="folder-info">
+                            <div class="folder-name">${folderName}</div>
+                            <div class="docx-files-counter">${tempFiles.length} docx files found!</div>
+                        </div>
+                        <div class="folder-remove" onclick="removeFolder(this)">
+                            <i class="material-icons" style="color:rgba(0, 0, 0, 0.5);font-size:14px">close</i>
+                        </div>
+                    </div>
+                `
+                $(".selected-folder-content").append(selected);
+            });
+
+        });
+        var blob;
+        function calculate() {
+            document.getElementById("uploading").classList.remove('hide');
+            document.getElementById("calculate").classList.add('hide');
+            document.getElementsByClassName("folder-remove")[0].classList.add("disable-pointer-events");
+
+            let formdata = new FormData();
+            for (i = 0; i < tempFiles.length; i++) {
+                let file = tempFiles[i];
+                formdata.append("files", file);
+            }
+
+            $.ajax({
+                url: "/files/upload",
+                type: "POST",
+                data: formdata,
+                contentType: false,
+                processData: false,
+                xhrFields: {
+                    responseType: 'blob' // Ensure response is treated as a Blob
+                },
+                error: function (error) {
+                    //recalculate
+                    document.getElementsByClassName("folder-remove")[0].classList.remove("disable-pointer-events");
+                    resetAction();
+                    let errorMessage = error.responseJSON && error.responseJSON.error ? error.responseJSON.error : 'Something went wrong';
+                    presentToast(errorMessage, 0);
+                    $("#input-excel").val("");
+                },
+                success: function (data) {
+                    blob = data;
+                    presentToast("calculation completed", 1);
+                    tempFiles = [];
+                    $("#input-excel").val("");
+                    document.getElementById("uploading").classList.add('hide');
+                    document.getElementById("download").classList.remove('hide');
+                    document.getElementsByClassName("folder-remove")[0].classList.remove("disable-pointer-events");
+                },
+            });
+        }
+        function removeFolder() {
+            document.getElementsByClassName("selected-folder-content")[0].classList.add('hide');
+            document.getElementsByClassName("action")[0].classList.add('hide');
+            ///
+            resetAction();
+            //
+            $("#" + "selected-folder").remove();
+            tempFiles = [];
+            $("#input-excel").val("");
+        }
+        function resetAction() {
+            document.getElementById("calculate").classList.remove('hide');
+            document.getElementById("uploading").classList.add('hide');
+            document.getElementById("download").classList.add('hide');
+            document.getElementsByClassName("download")[0].classList.remove('disable');
+        }
+
+        async function presentToast(message, type) {
+            const toast = document.createElement("ion-toast");
+            toast.message = message;
+            (toast.color = type == 1 ? "success" : "danger");
+            toast.duration = 3000;
+            toast.position = "bottom";
+            toast.cssClass = "toast";
+            document.getElementsByClassName("centerify")[0].appendChild(toast);
+
+            return toast.present();
+        }
+
+        function download() {
+            document.getElementsByClassName("download")[0].classList.add('disable');
+            let url = window.URL.createObjectURL(new Blob([blob], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'computed.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            // saveAs(blob, 'ExcelFile.xlsx'); // Save the blob using FileSaver.js
+        }
+
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+    </script>
+</body>
+
+</html>
